@@ -1,0 +1,74 @@
+;; gorilla-repl.fileformat = 1
+
+;; **
+;;; # Calculus I Final Project
+;;; 
+;;; ## #4 Rabbit Fox Model
+;;; 
+;;; Shift + enter evaluates code. Hit ctrl+g twice in quick succession or click the menu icon (upper-right corner) for more commands ...
+;;; 
+;;; It's a good habit to run each worksheet in its own namespace: feel free to use the declaration we've provided below if you'd like.
+;; **
+
+;; @@
+(ns rabbit-vs-fox-simulator
+  (:require [gorilla-plot.core :as plot]))
+;; @@
+;; =>
+;;; {"type":"html","content":"<span class='clj-nil'>nil</span>","value":"nil"}
+;; <=
+
+;; @@
+(defn Rt
+  "Function of new Rabbits given Foxes"
+  [R F]
+  (- (* (* 0.1 R) (- 1 (/ R 10000)))
+     (* (* 0.005 R) F)))
+
+(defn Ft
+  "Function of new Foxes given Rabbits"
+  [R F]
+  (- (* (* 0.00004 R) F)
+     (* 0.04 F)))
+
+(defn RabbitFoxModel
+  "Euler's Method applied to Rabbits and Foxes over time"
+  [Rinitial Finitial tInitial tFinal deltaT]
+  (let [numberOfSteps (/ (- tFinal tInitial) deltaT)]
+    (loop [i 1
+           R Rinitial
+           F Finitial
+           t tInitial
+           datapointsR '()
+           datapointsF '()
+           datapointst '()]
+      (do (print i " ")
+        (if (= i numberOfSteps)
+          (do (println "deltaT:" deltaT " t:" t " Rabbits:" R " Foxes:" F)
+            (plot/compose (plot/list-plot datapointsR :joined true :color "gray")
+                          (plot/list-plot datapointsF :joined true :color "red")))
+          (let [t (+ t deltaT)
+                newR (+ R (* (Rt R F) deltaT))
+                newF (+ F (* (Ft R F) deltaT))]
+            (recur (inc i)
+                   newR
+                   newF
+                   t
+                   (conj datapointsR newR)
+                   (conj datapointsF newF)
+                   (conj datapointst t))))))))
+;; @@
+;; =>
+;;; {"type":"html","content":"<span class='clj-var'>#&#x27;rabbit-vs-fox-simulator/RabbitFoxModel</span>","value":"#'rabbit-vs-fox-simulator/RabbitFoxModel"}
+;; <=
+
+;; @@
+(RabbitFoxModel 100 1 0 10 1)
+;; @@
+;; ->
+;;; 1  2  3  4  5  6  7  8  9  10  deltaT: 1  t: 9  Rabbits: 224.79005920197548  Foxes: 0.7317110516660283
+;;; 
+;; <-
+;; =>
+;;; {"type":"vega","content":{"width":400,"height":247.2187957763672,"padding":{"top":10,"left":55,"bottom":40,"right":10},"scales":[{"name":"x","type":"linear","range":"width","zero":false,"domain":{"data":"0d87698a-901a-4d8f-81c8-6bf605797099","field":"data.x"}},{"name":"y","type":"linear","range":"height","nice":true,"zero":false,"domain":{"data":"0d87698a-901a-4d8f-81c8-6bf605797099","field":"data.y"}}],"axes":[{"type":"x","scale":"x"},{"type":"y","scale":"y"}],"data":[{"name":"0d87698a-901a-4d8f-81c8-6bf605797099","values":[{"x":0,"y":224.79005920197548},{"x":1,"y":205.4440296465559},{"x":2,"y":187.75438994425897},{"x":3,"y":171.58353829264786},{"x":4,"y":156.80447095156586},{"x":5,"y":143.30011522503455},{"x":6,"y":130.96267698569818},{"x":7,"y":119.69300840000001},{"x":8,"y":109.4}]},{"name":"ecf79e51-c8ca-4065-99e1-0631a4621a04","values":[{"x":0,"y":0.7317110516660283},{"x":1,"y":0.7557298378515974},{"x":2,"y":0.7811078962396176},{"x":3,"y":0.8078782829869066},{"x":4,"y":0.836077350336606},{"x":5,"y":0.865744685219489},{"x":6,"y":0.8969230701736273},{"x":7,"y":0.929658464},{"x":8,"y":0.964}]}],"marks":[{"type":"line","from":{"data":"0d87698a-901a-4d8f-81c8-6bf605797099"},"properties":{"enter":{"x":{"scale":"x","field":"data.x"},"y":{"scale":"y","field":"data.y"},"stroke":{"value":"gray"},"strokeWidth":{"value":2},"strokeOpacity":{"value":1}}}},{"type":"line","from":{"data":"ecf79e51-c8ca-4065-99e1-0631a4621a04"},"properties":{"enter":{"x":{"scale":"x","field":"data.x"},"y":{"scale":"y","field":"data.y"},"stroke":{"value":"red"},"strokeWidth":{"value":2},"strokeOpacity":{"value":1}}}}]},"value":"#gorilla_repl.vega.VegaView{:content {:width 400, :height 247.2188, :padding {:top 10, :left 55, :bottom 40, :right 10}, :scales [{:name \"x\", :type \"linear\", :range \"width\", :zero false, :domain {:data \"0d87698a-901a-4d8f-81c8-6bf605797099\", :field \"data.x\"}} {:name \"y\", :type \"linear\", :range \"height\", :nice true, :zero false, :domain {:data \"0d87698a-901a-4d8f-81c8-6bf605797099\", :field \"data.y\"}}], :axes [{:type \"x\", :scale \"x\"} {:type \"y\", :scale \"y\"}], :data ({:name \"0d87698a-901a-4d8f-81c8-6bf605797099\", :values ({:x 0, :y 224.79005920197548} {:x 1, :y 205.4440296465559} {:x 2, :y 187.75438994425897} {:x 3, :y 171.58353829264786} {:x 4, :y 156.80447095156586} {:x 5, :y 143.30011522503455} {:x 6, :y 130.96267698569818} {:x 7, :y 119.69300840000001} {:x 8, :y 109.4})} {:name \"ecf79e51-c8ca-4065-99e1-0631a4621a04\", :values ({:x 0, :y 0.7317110516660283} {:x 1, :y 0.7557298378515974} {:x 2, :y 0.7811078962396176} {:x 3, :y 0.8078782829869066} {:x 4, :y 0.836077350336606} {:x 5, :y 0.865744685219489} {:x 6, :y 0.8969230701736273} {:x 7, :y 0.929658464} {:x 8, :y 0.964})}), :marks ({:type \"line\", :from {:data \"0d87698a-901a-4d8f-81c8-6bf605797099\"}, :properties {:enter {:x {:scale \"x\", :field \"data.x\"}, :y {:scale \"y\", :field \"data.y\"}, :stroke {:value \"gray\"}, :strokeWidth {:value 2}, :strokeOpacity {:value 1}}}} {:type \"line\", :from {:data \"ecf79e51-c8ca-4065-99e1-0631a4621a04\"}, :properties {:enter {:x {:scale \"x\", :field \"data.x\"}, :y {:scale \"y\", :field \"data.y\"}, :stroke {:value \"red\"}, :strokeWidth {:value 2}, :strokeOpacity {:value 1}}}})}}"}
+;; <=
