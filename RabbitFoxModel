@@ -3,7 +3,7 @@
 ;; **
 ;;; # Calculus I Final Project
 ;;; 
-;;; ## #4 Rabbit Fox Model
+;;; ## #3 Rabbit Fox Model
 ;;; 
 ;;; Shift + enter evaluates code. Hit ctrl+g twice in quick succession or click the menu icon (upper-right corner) for more commands ...
 ;;; 
@@ -42,11 +42,10 @@
            datapointsR '()
            datapointsF '()
            datapointst '()]
-      (do (print i " ")
-        (if (= i numberOfSteps)
+        (if (> i numberOfSteps)
           (do (println "deltaT:" deltaT " t:" t " Rabbits:" R " Foxes:" F)
-            (plot/compose (plot/list-plot datapointsR :joined true :color "gray")
-                          (plot/list-plot datapointsF :joined true :color "red")))
+              (plot/list-plot datapointsR :joined true :color "gray")
+              (plot/list-plot datapointsF :joined true :color "red"))
           (let [t (+ t deltaT)
                 newR (+ R (* (Rt R F) deltaT))
                 newF (+ F (* (Ft R F) deltaT))]
@@ -56,7 +55,7 @@
                    t
                    (conj datapointsR newR)
                    (conj datapointsF newF)
-                   (conj datapointst t))))))))
+                   (conj datapointst t)))))))
 ;; @@
 ;; =>
 ;;; {"type":"html","content":"<span class='clj-var'>#&#x27;rabbit-vs-fox-simulator/RabbitFoxModel</span>","value":"#'rabbit-vs-fox-simulator/RabbitFoxModel"}
@@ -66,7 +65,7 @@
 (RabbitFoxModel 100 1 0 10 1)
 ;; @@
 ;; ->
-;;; 1  2  3  4  5  6  7  8  9  10  deltaT: 1  t: 9  Rabbits: 224.79005920197548  Foxes: 0.7317110516660283
+;;; deltaT: 1  t: 9  Rabbits: 224.79005920197548  Foxes: 0.7317110516660283
 ;;; 
 ;; <-
 ;; =>
