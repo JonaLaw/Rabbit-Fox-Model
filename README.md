@@ -1,7 +1,7 @@
 # Rabbit-Fox-Model
-**Euler's Method**  
+**Using Euler's Method**  
   
-Veiwing:  
+Viewing:  
 http://viewer.gorilla-repl.org/view.html?source=github&user=JonaLaw&repo=Rabbit-Fox-Model&path=RabbitFoxModel
   
 Running:  
